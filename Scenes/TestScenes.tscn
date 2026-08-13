@@ -1,0 +1,58 @@
+[gd_scene format=3 uid="uid://611g5066td2o"]
+
+[ext_resource type="Script" uid="uid://b44fet13nn05j" path="res://pingopingo.gd" id="1_iyfvc"]
+[ext_resource type="Script" uid="uid://crktxnht83aj5" path="res://Scripts/Componnents/MovementComponent.cs" id="3_x5jei"]
+[ext_resource type="Script" uid="uid://br2buyof7vvgj" path="res://Prefabs/test_nodes.gd" id="4_p8ee4"]
+
+[sub_resource type="Gradient" id="Gradient_uy7h1"]
+colors = PackedColorArray(0.05882353, 0.14117648, 0, 1, 0.049524397, 0.4526301, 0.24104857, 1)
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_iyfvc"]
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_psub8"]
+width = 1024
+height = 1024
+generate_mipmaps = false
+noise = SubResource("FastNoiseLite_iyfvc")
+color_ramp = SubResource("Gradient_uy7h1")
+seamless = true
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_sjgns"]
+albedo_texture = SubResource("NoiseTexture2D_psub8")
+uv1_triplanar = true
+
+[sub_resource type="BoxMesh" id="BoxMesh_p8ee4"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_60tjc"]
+
+[node name="Main" type="Node3D" unique_id=110779793]
+script = ExtResource("1_iyfvc")
+
+[node name="CSGCombiner3D" type="CSGCombiner3D" parent="." unique_id=216872737]
+material_override = SubResource("StandardMaterial3D_sjgns")
+use_collision = true
+
+[node name="CSGBox3D" type="CSGBox3D" parent="CSGCombiner3D" unique_id=870556320]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.28564453, 0)
+size = Vector3(45, 0.429, 45)
+
+[node name="Camera3D" type="Camera3D" parent="." unique_id=122987635]
+transform = Transform3D(1, 0, 0, 0, 0.7071068, 0.7071068, 0, -0.7071068, 0.7071068, 0, 4.1211467, 4.1211467)
+
+[node name="Player" type="CharacterBody3D" parent="." unique_id=1752068249]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.007237911, 0, 0)
+script = ExtResource("3_x5jei")
+metadata/_custom_type_script = "uid://crktxnht83aj5"
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Player" unique_id=1159379593]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3553686, 0)
+mesh = SubResource("BoxMesh_p8ee4")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Player" unique_id=142555128]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.39157677, 0)
+shape = SubResource("BoxShape3D_60tjc")
+
+[node name="TestNode" type="Node" parent="Player" unique_id=1310027588 node_paths=PackedStringArray("nodo")]
+script = ExtResource("4_p8ee4")
+nodo = NodePath("..")
+metadata/_custom_type_script = "uid://br2buyof7vvgj"
