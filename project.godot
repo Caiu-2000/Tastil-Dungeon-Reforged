@@ -1,0 +1,7 @@
+; Engine configuration file.
+
+[application]
+
+config/name="Tastil Dungeon Reforged"
+config/icon="res://icon.jpeg"
+config/features=PackedStringArray("4.8")
