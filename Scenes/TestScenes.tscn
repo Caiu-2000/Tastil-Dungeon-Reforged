@@ -1,8 +1,9 @@
 [gd_scene format=3 uid="uid://611g5066td2o"]
 
-[ext_resource type="Script" uid="uid://b44fet13nn05j" path="res://pingopingo.gd" id="1_iyfvc"]
-[ext_resource type="Script" uid="uid://crktxnht83aj5" path="res://Scripts/Componnents/MovementComponent.cs" id="3_x5jei"]
-[ext_resource type="Script" uid="uid://br2buyof7vvgj" path="res://Prefabs/test_nodes.gd" id="4_p8ee4"]
+[ext_resource type="Script" uid="uid://bvtcw53mcxjkm" path="res://Scripts/ForTesting.gd" id="1_x5jei"]
+[ext_resource type="Script" uid="uid://n5s6jntctwt8" path="res://Scripts/Componnents/PlayerMoveComp.cs" id="2_x5jei"]
+[ext_resource type="Script" uid="uid://c1fmkxvgv38wg" path="res://Scripts/Componnents/Player.cs" id="3_p8ee4"]
+[ext_resource type="Script" uid="uid://ca4xqwab8leux" path="res://Scripts/Systems/CameraController.cs" id="3_x5jei"]
 
 [sub_resource type="Gradient" id="Gradient_uy7h1"]
 colors = PackedColorArray(0.05882353, 0.14117648, 0, 1, 0.049524397, 0.4526301, 0.24104857, 1)
@@ -21,12 +22,12 @@ seamless = true
 albedo_texture = SubResource("NoiseTexture2D_psub8")
 uv1_triplanar = true
 
-[sub_resource type="BoxMesh" id="BoxMesh_p8ee4"]
-
 [sub_resource type="BoxShape3D" id="BoxShape3D_60tjc"]
 
+[sub_resource type="BoxMesh" id="BoxMesh_nqrjp"]
+
 [node name="Main" type="Node3D" unique_id=110779793]
-script = ExtResource("1_iyfvc")
+script = ExtResource("1_x5jei")
 
 [node name="CSGCombiner3D" type="CSGCombiner3D" parent="." unique_id=216872737]
 material_override = SubResource("StandardMaterial3D_sjgns")
@@ -36,23 +37,30 @@ use_collision = true
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.28564453, 0)
 size = Vector3(45, 0.429, 45)
 
-[node name="Camera3D" type="Camera3D" parent="." unique_id=122987635]
-transform = Transform3D(1, 0, 0, 0, 0.7071068, 0.7071068, 0, -0.7071068, 0.7071068, 0, 4.1211467, 4.1211467)
-
-[node name="Player" type="CharacterBody3D" parent="." unique_id=1752068249]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.007237911, 0, 0)
-script = ExtResource("3_x5jei")
-metadata/_custom_type_script = "uid://crktxnht83aj5"
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Player" unique_id=1159379593]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3553686, 0)
-mesh = SubResource("BoxMesh_p8ee4")
+[node name="Player" type="CharacterBody3D" parent="." unique_id=1199527014 node_paths=PackedStringArray("CameraMount")]
+script = ExtResource("2_x5jei")
+CameraMount = NodePath("Marker3D")
+CameraSensitivity = 10.0
+metadata/_custom_type_script = "uid://n5s6jntctwt8"
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Player" unique_id=142555128]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.39157677, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.007, 0.5, 0)
 shape = SubResource("BoxShape3D_60tjc")
 
-[node name="TestNode" type="Node" parent="Player" unique_id=1310027588 node_paths=PackedStringArray("nodo")]
-script = ExtResource("4_p8ee4")
-nodo = NodePath("..")
-metadata/_custom_type_script = "uid://br2buyof7vvgj"
+[node name="Marker3D" type="Marker3D" parent="Player" unique_id=478989197]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.3337123, 0)
+
+[node name="Player" type="Node" parent="Player" unique_id=268676857 node_paths=PackedStringArray("CamMount")]
+script = ExtResource("3_p8ee4")
+CamMount = NodePath("../Marker3D")
+metadata/_custom_type_script = "uid://c1fmkxvgv38wg"
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Player" unique_id=1628096313]
+visible = false
+mesh = SubResource("BoxMesh_nqrjp")
+
+[node name="Camera3D" type="Camera3D" parent="." unique_id=1002649012 node_paths=PackedStringArray("ObjectiveNode")]
+script = ExtResource("3_x5jei")
+ObjectiveNode = NodePath("../Player/Marker3D")
+PositionDampening = 100.0
+RotationDampening = 30.0
