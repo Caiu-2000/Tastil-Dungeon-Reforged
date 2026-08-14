@@ -4,6 +4,8 @@
 [ext_resource type="Script" uid="uid://n5s6jntctwt8" path="res://Scripts/Componnents/PlayerMoveComp.cs" id="2_x5jei"]
 [ext_resource type="Script" uid="uid://c1fmkxvgv38wg" path="res://Scripts/Componnents/Player.cs" id="3_p8ee4"]
 [ext_resource type="Script" uid="uid://ca4xqwab8leux" path="res://Scripts/Systems/CameraController.cs" id="3_x5jei"]
+[ext_resource type="Script" uid="uid://dovy11t0xny35" path="res://Scripts/Componnents/HitBox.cs" id="4_60tjc"]
+[ext_resource type="Script" uid="uid://p7brpxgqykm6" path="res://Deletable/box_of_damage_and_despair.gd" id="6_gxdi2"]
 
 [sub_resource type="Gradient" id="Gradient_uy7h1"]
 colors = PackedColorArray(0.05882353, 0.14117648, 0, 1, 0.049524397, 0.4526301, 0.24104857, 1)
@@ -25,6 +27,17 @@ uv1_triplanar = true
 [sub_resource type="BoxShape3D" id="BoxShape3D_60tjc"]
 
 [sub_resource type="BoxMesh" id="BoxMesh_nqrjp"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_gxdi2"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_id8tu"]
+transparency = 1
+albedo_color = Color(0.91764706, 0.023529412, 0.05490196, 0.5568628)
+
+[sub_resource type="BoxMesh" id="BoxMesh_0a0e2"]
+material = SubResource("StandardMaterial3D_id8tu")
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_833my"]
 
 [node name="Main" type="Node3D" unique_id=110779793]
 script = ExtResource("1_x5jei")
@@ -59,8 +72,30 @@ metadata/_custom_type_script = "uid://c1fmkxvgv38wg"
 visible = false
 mesh = SubResource("BoxMesh_nqrjp")
 
+[node name="HitBox" type="Area3D" parent="Player" unique_id=2126650322 node_paths=PackedStringArray("Reference")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
+script = ExtResource("4_60tjc")
+Reference = NodePath("../Player")
+metadata/_custom_type_script = "uid://dovy11t0xny35"
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Player/HitBox" unique_id=688137593]
+shape = SubResource("BoxShape3D_gxdi2")
+
 [node name="Camera3D" type="Camera3D" parent="." unique_id=1002649012 node_paths=PackedStringArray("ObjectiveNode")]
 script = ExtResource("3_x5jei")
 ObjectiveNode = NodePath("../Player/Marker3D")
 PositionDampening = 100.0
 RotationDampening = 30.0
+
+[node name="BoxOfDamageAndDespair" type="MeshInstance3D" parent="." unique_id=1982445758]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, -4.2655215)
+mesh = SubResource("BoxMesh_0a0e2")
+script = ExtResource("6_gxdi2")
+
+[node name="Area3D" type="Area3D" parent="BoxOfDamageAndDespair" unique_id=1813208505]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="BoxOfDamageAndDespair/Area3D" unique_id=2138609601]
+shape = SubResource("BoxShape3D_833my")
+
+[connection signal="area_entered" from="BoxOfDamageAndDespair/Area3D" to="BoxOfDamageAndDespair" method="_on_area_3d_area_entered"]
+[connection signal="body_entered" from="BoxOfDamageAndDespair/Area3D" to="BoxOfDamageAndDespair" method="_on_area_3d_body_entered"]

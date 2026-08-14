@@ -25,6 +25,8 @@ public partial class InputComponent : Node
 
 		direction = Input.GetVector("Left", "Right", "Foward", "Backwards");
 		OnMovePressed?.Invoke(direction);
+
+		if (Input.IsActionJustPressed("ui_cancel")) {_ToggleMouse(false);}
     }
 
 	public override void _UnhandledInput(InputEvent @event)

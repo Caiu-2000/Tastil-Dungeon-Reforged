@@ -8,6 +8,7 @@ public partial class Player: Entity
 
 	public override void _Ready()
 	{
+		base._Ready();
 		GameManager.player = this;
 	}
 }

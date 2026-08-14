@@ -1,6 +1,16 @@
-
-// No lo declaro como IComponent por que esta en uso por C# y se puede romper
-public interface Componnent
+using Godot;
+public interface IHittable
 {
-	void Activate();
+	public void Hitt(HittData data);
+
+}
+
+public interface Iknockbackable
+{
+	public void Knockback(Vector3 direction, float force);
+}
+
+public interface IDamagable
+{
+	public void ApplyDamage(float damage);
 }
