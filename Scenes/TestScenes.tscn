@@ -6,6 +6,7 @@
 [ext_resource type="Script" uid="uid://ca4xqwab8leux" path="res://Scripts/Systems/CameraController.cs" id="3_x5jei"]
 [ext_resource type="Script" uid="uid://dovy11t0xny35" path="res://Scripts/Componnents/HitBox.cs" id="4_60tjc"]
 [ext_resource type="Script" uid="uid://p7brpxgqykm6" path="res://Deletable/box_of_damage_and_despair.gd" id="6_gxdi2"]
+[ext_resource type="Script" uid="uid://chuu5wwdyb83f" path="res://Scripts/Systems/MainCanvas.cs" id="7_id8tu"]
 
 [sub_resource type="Gradient" id="Gradient_uy7h1"]
 colors = PackedColorArray(0.05882353, 0.14117648, 0, 1, 0.049524397, 0.4526301, 0.24104857, 1)
@@ -53,7 +54,7 @@ size = Vector3(45, 0.429, 45)
 [node name="Player" type="CharacterBody3D" parent="." unique_id=1199527014 node_paths=PackedStringArray("CameraMount")]
 script = ExtResource("2_x5jei")
 CameraMount = NodePath("Marker3D")
-CameraSensitivity = 10.0
+CameraSensitivity = 3.0
 metadata/_custom_type_script = "uid://n5s6jntctwt8"
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Player" unique_id=142555128]
@@ -96,6 +97,27 @@ script = ExtResource("6_gxdi2")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="BoxOfDamageAndDespair/Area3D" unique_id=2138609601]
 shape = SubResource("BoxShape3D_833my")
+
+[node name="MainCanvas" type="CanvasLayer" parent="." unique_id=1020586767 node_paths=PackedStringArray("lifeBar")]
+script = ExtResource("7_id8tu")
+lifeBar = NodePath("GameUi/ProgressBar")
+
+[node name="GameUi" type="Control" parent="MainCanvas" unique_id=1121751978]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ProgressBar" type="ProgressBar" parent="MainCanvas/GameUi" unique_id=1495926449]
+modulate = Color(1, 0.050980393, 0, 1)
+layout_mode = 0
+offset_right = 398.0
+offset_bottom = 44.0
+max_value = 1.0
+value = 1.0
+show_percentage = false
 
 [connection signal="area_entered" from="BoxOfDamageAndDespair/Area3D" to="BoxOfDamageAndDespair" method="_on_area_3d_area_entered"]
 [connection signal="body_entered" from="BoxOfDamageAndDespair/Area3D" to="BoxOfDamageAndDespair" method="_on_area_3d_body_entered"]

@@ -11,7 +11,7 @@ public partial class Entity : Node , IDamagable
 
 
 	[Signal]
-	public delegate void HealtchangedEventHandler(float newValue);
+	public delegate void HealtchangedEventHandler(float newValue , float maxValue);
 	public delegate void DiedEventHandler();
   
 	public HealtchangedEventHandler OnDamaged = delegate { };
@@ -26,7 +26,7 @@ public partial class Entity : Node , IDamagable
 	public virtual void ApplyDamage(float damage)
 	{
 		currentLife -= damage;
-		OnDamaged?.Invoke(currentLife);
+		OnDamaged?.Invoke(currentLife , MaxLife);
 		
 		if (currentLife <= 0)
 		{
